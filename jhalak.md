@@ -11,3 +11,5 @@ Day 7-  Had a meet with teammates and designed a database cluster for the projec
 Day 8-  Had a meeting with teammates and designed a database schema (basic) for the project.
 
 Day 9 - Connected the backend database setup with the login page authorization.
+
+Day 10- Created a database schema on the basis of the roles defined to the dashboard i.e, student and admin
