@@ -14,4 +14,6 @@ Day 9 - Connected the backend database setup with the login page authorization.
 
 Day 10- Created a database schema on the basis of the roles defined to the dashboard i.e, student and admin
 
-Day 11 - Tried to connect the frontend login page with backend part
+Day 11- Tried to connect the frontend login page with backend part
+
+Day 12- Completed the backwnd connection part
