@@ -17,3 +17,7 @@ Day 10- Created a database schema on the basis of the roles defined to the dashb
 Day 11- Tried to connect the frontend login page with backend part
 
 Day 12- Completed the backwnd connection part
+
+Day 13- Completed some backend part and frontend page
+
+Day 14- Some frontend part in calender and snake games.
