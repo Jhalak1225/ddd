@@ -21,3 +21,5 @@ Day 12- Completed the backwnd connection part
 Day 13- Completed some backend part and frontend page
 
 Day 14- Some frontend part in calender and snake games.
+
+Day 15 and 16 - Created some parts in DDD chatbot typescript file
