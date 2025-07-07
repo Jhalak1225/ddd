@@ -28,8 +28,6 @@ Day 16 - Designed and completed some parts in DDD chatbot typescript file
 
 Day 17 - Completed some features in the dashboard
 
-Day 18 -
-
 Day 19 - Completed some backend part
 
 Day 20 - Completed the login page backend but didn;t commit it
