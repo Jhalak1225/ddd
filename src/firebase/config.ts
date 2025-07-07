@@ -5,17 +5,17 @@ import {getFirestore} from "firebase/firestore";
 
 const firebaseConfig = {
 
-  apiKey: "AIzaSyAn6I6dfWDvX6S8Ju59MBtxbBDdjpwJP7o",
+  apiKey: "************",
 
-  authDomain: "peerevaluation-dd8d8.firebaseapp.com",
+  authDomain: "********",
 
-  projectId: "peerevaluation-dd8d8",
+  projectId: "***********",
 
-  storageBucket: "peerevaluation-dd8d8.firebasestorage.app",
+  storageBucket: "************",
 
-  messagingSenderId: "651851550941",
+  messagingSenderId: "**************",
 
-  appId: "1:651851550941:web:957c2cc3498a5104130b34"
+  appId: "************"
 
 };
 
