@@ -2,6 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth , db} from '../firebase/config'; // 👈 import Firebase auth
+import { setDoc, doc} from 'firebase/firestore';
 import '../styles/Register2.css';
 
 interface FormData {
@@ -18,6 +21,7 @@ const RegisterStep2: React.FC = () => {
   });
   const [errors, setErrors] = useState<Partial<FormData>>({});
   const [showPassword, setShowPassword] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,7 +44,7 @@ const RegisterStep2: React.FC = () => {
     } else if (name === 'password') {
       if (!value.trim()) newErrors.password = 'Password is required';
       else if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/.test(value)) {
-        newErrors.password = 'Password should be more thean 8 charcters. It should contain letters, numbers and special charcters';
+        newErrors.password = 'Password should be more than 8 characters and include letters, numbers, and special characters';
       } else delete newErrors.password;
     } else if (name === 'confirmPassword') {
       if (value !== formData.password) newErrors.confirmPassword = 'Passwords do not match';
@@ -49,48 +53,46 @@ const RegisterStep2: React.FC = () => {
     setErrors(newErrors);
   };
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  if (
-    Object.keys(errors).length > 0 ||
-    !formData.email ||
-    !formData.password ||
-    !formData.confirmPassword
-  ) {
-    alert('Please fix the errors.');
-    return;
-  }
-
-  const step1Data = JSON.parse(localStorage.getItem('registerData') || '{}');
-  const fullData = { ...step1Data, ...formData };
-
-  try {
-    const response = await fetch('http://localhost:5000/api/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(fullData),
-    });
-
-    const result = await response.json();
-    if (response.ok) {
-      localStorage.setItem('fullRegisterData', JSON.stringify(fullData));
-      setSuccessMessage('Registration Successful! Redirecting to Login Page...');
-      setTimeout(() => navigate('/Login'), 2000);
-    } else {
-      console.error('❌ Backend error:', result);
-      alert(result.error || 'Registration failed');
+    if (
+      Object.keys(errors).length > 0 ||
+      !formData.email ||
+      !formData.password ||
+      !formData.confirmPassword
+    ) {
+      alert('Please fix the errors.');
+      return;
     }
-  } catch (error) {
-    console.error('❌ Network error:', error);
-    alert('Something went wrong. Please try again.');
+
+    try {
+    // ✅ Firebase email/password signup
+    await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+    const user = auth.currentUser;
+
+    // ✅ Merge Step 1 + Step 2 data
+    const step1Data = JSON.parse(localStorage.getItem('registerData') || '{}');
+    const fullData = {
+      ...step1Data,
+      email: formData.email,
+      uid: user?.uid,
+      createdAt: new Date().toISOString(),
+    };
+
+    // ✅ Store full data in Firestore under "users" collection
+    if (user?.uid) {
+      await setDoc(doc(db, 'users', user.uid), fullData);
+    }
+
+    localStorage.setItem('fullRegisterData', JSON.stringify(fullData));
+    setSuccessMessage('🎉 Registration successful! Redirecting to login...');
+    setTimeout(() => navigate('/'), 2000);
+  } catch (error: any) {
+    console.error('Firebase Error:', error);
+    alert(error.message || 'Firebase registration failed');
   }
 };
-
-
-
-
-const [successMessage, setSuccessMessage] = useState('');
 
   return (
     <div className="register-container">
@@ -108,43 +110,43 @@ const [successMessage, setSuccessMessage] = useState('');
           {errors.email && <p className="error-text">{errors.email}</p>}
 
           <div className="password-wrapper">
-  <input
-    type={showPassword ? 'text' : 'password'}
-    name="password"
-    placeholder="Password"
-    value={formData.password}
-    onChange={handleChange}
-    className={errors.password ? 'input-error' : ''}
-    required
-  />
-  <span onClick={() => setShowPassword(!showPassword)} className="toggle-icon">
-    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-  </span>
-</div>
-{errors.password && <p className="error-text">{errors.password}</p>}
+            <input
+              type={showPassword ? 'text' : 'password'}
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              className={errors.password ? 'input-error' : ''}
+              required
+            />
+            <span onClick={() => setShowPassword(!showPassword)} className="toggle-icon">
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </span>
+          </div>
+          {errors.password && <p className="error-text">{errors.password}</p>}
 
-<div className="password-wrapper">
-  <input
-    type={showPassword ? 'text' : 'password'}
-    name="confirmPassword"
-    placeholder="Confirm Password"
-    value={formData.confirmPassword}
-    onChange={handleChange}
-    className={errors.confirmPassword ? 'input-error' : ''}
-    required
-  />
-  <span onClick={() => setShowPassword(!showPassword)} className="toggle-icon">
-    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-  </span>
-</div>
-{errors.confirmPassword && <p className="error-text">{errors.confirmPassword}</p>}
+          <div className="password-wrapper">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              name="confirmPassword"
+              placeholder="Confirm Password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              className={errors.confirmPassword ? 'input-error' : ''}
+              required
+            />
+            <span onClick={() => setShowPassword(!showPassword)} className="toggle-icon">
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </span>
+          </div>
+          {errors.confirmPassword && <p className="error-text">{errors.confirmPassword}</p>}
 
           <button type="button" className="btn-secondary" onClick={() => navigate('/Register1')}>
-           Previous
+            Previous
           </button>
           <button type="submit">Register</button>
 
-  {successMessage && <p className="success-text">{successMessage}</p>}
+          {successMessage && <p className="success-text">{successMessage}</p>}
         </form>
       </div>
     </div>
