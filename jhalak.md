@@ -25,3 +25,23 @@ Day 14- Some frontend part in calender and snake games.
 Day 15 - Created some parts in DDD chatbot typescript file
 
 Day 16 - Designed and completed some parts in DDD chatbot typescript file
+
+Day 17 - Completed some features in the dashboard
+
+Day 18 -
+
+Day 19 - Completed some backend part
+
+Day 20 - Completed the login page backend but didn;t commit it
+
+Day 21 - Designed the Registeration Page 
+
+Day 22 - Completed the Registeration file
+
+Day 23 - Committed some parts of Login page 
+
+Day 24 - Tried to authenticate the users for Logging in 
+
+Day 25 - Completed the Forgot Password file
+
+Day 26 - Connected the login page with dashboard
