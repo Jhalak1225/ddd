@@ -1,23 +1,28 @@
+
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import {getAuth} from "firebase/auth";
+import {getFirestore} from "firebase/firestore"; 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAC8Wk51jSVIHQAeNh1pTxDstsE-XqgIyk",
 
-  authDomain: "react-login-app-2942d.firebaseapp.com",
+  apiKey: "AIzaSyAn6I6dfWDvX6S8Ju59MBtxbBDdjpwJP7o",
 
-  projectId: "react-login-app-2942d",
+  authDomain: "peerevaluation-dd8d8.firebaseapp.com",
 
-  storageBucket: "react-login-app-2942d.firebasestorage.app",
+  projectId: "peerevaluation-dd8d8",
 
-  messagingSenderId: "1072329267941",
+  storageBucket: "peerevaluation-dd8d8.firebasestorage.app",
 
-  appId: "1:1072329267941:web:59ec6b95f266e336b7920c",
+  messagingSenderId: "651851550941",
 
-  measurementId: "G-H6T2XMLGMQ"
+  appId: "1:651851550941:web:957c2cc3498a5104130b34"
 
 };
 
+
+
+
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
-export const googleProvider = new GoogleAuthProvider();
+export const auth = getAuth();
+export const db = getFirestore(); 
+export default app;
